@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %} Candidaturas Recebidas {% endblock %}
+
+{% block content %}
+<!-- Barra de navegação fixa no topo -->
+<nav class="bg-gray-900 text-white shadow-md fixed w-full top-0 left-0 z-10">
+    <div class="container mx-auto flex justify-between items-center py-4">
+        <a href="{{ url_for('empresa_dashboard') }}" class="text-2xl font-bold">
+            Tinder Jobs
+        </a>
+        <ul class="flex space-x-4">
+            <li><a href="{{ url_for('add_job') }}" class="hover:text-gray-200">Adicionar Vaga</a></li>
+            <li><a href="{{ url_for('empresa_candidaturas') }}" class="hover:text-gray-200">Ver Candidaturas</a></li>
+            <li><a href="{{ url_for('logout') }}" class="hover:text-gray-200 text-red-300">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+
+<div class="container mx-auto my-10">
+    <!-- Título e introdução -->
+    <div class="bg-gradient-to-r from-blue-600 via-blue-800 to-green-500 text-white p-8 rounded-lg shadow-lg text-center mb-8">
+        <h2 class="text-3xl font-bold">Candidaturas Recebidas</h2>
+        <p class="mt-2 text-lg">Veja as candidaturas enviadas para suas vagas e gerencie entrevistas e status de candidatos.</p>
+    </div>
+
+    <!-- Lista de candidaturas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for candidatura in candidaturas %}
+        <div class="bg-white border rounded-lg shadow-md p-6 relative hover:shadow-lg transition duration-300">
+            <div class="flex items-center mb-4">
+                <!-- Foto de perfil do desenvolvedor -->
+                {% if candidatura.dev.profile_picture %}
+                <img src="{{ url_for('static', filename='uploads/' ~ candidatura.dev.profile_picture) }}" alt="Foto de Perfil" class="w-16 h-16 rounded-full mr-4">
+                {% else %}
+                <div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center mr-4">
+                    <i class="fas fa-user text-2xl text-gray-500"></i>
+                </div>
+                {% endif %}
+
+                <div>
+                    <!-- Nome do Desenvolvedor -->
+                    <h5 class="text-xl font-semibold text-gray-900">{{ candidatura.dev.name }}</h5>
+                    <p class="text-sm text-gray-600">{{ candidatura.dev.email }}</p>
+                </div>
+            </div>
+
+            <!-- Detalhes da vaga e habilidades do desenvolvedor -->
+            <p class="text-gray-700 mb-2"><strong>Vaga:</strong> {{ candidatura.job.title }}</p>
+            <p class="text-gray-700 mb-4"><strong>Habilidades:</strong> {{ candidatura.dev.habilidades }}</p>
+
+            <!-- Ações: Dar Match, Agendar Entrevista e Atualizar Status -->
+            <div class="space-y-4">
+                <!-- Botão de Dar Match ou Mostrar que o Match foi feito -->
+                {% if candidatura.application.matched %}
+                <p class="text-green-600 font-bold text-center">
+                    <i class="fas fa-check-circle"></i> Match Feito!
+                </p>
+                {% else %}
+                <form action="{{ url_for('match_candidate', candidatura_id=candidatura.application.id) }}" method="POST">
+                    <button type="submit" class="w-full bg-green-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-green-600 transition duration-300">
+                        <i class="fas fa-check-circle"></i> Dar Match
+                    </button>
+                </form>
+                {% endif %}
+
+                <!-- Mostrar o agendamento de entrevista apenas se o Match for feito -->
+                {% if candidatura.application.matched %}
+                <form action="{{ url_for('schedule_interview', job_id=candidatura.job.id, dev_id=candidatura.dev.id) }}" method="POST">
+                    <label class="block text-gray-700">Agendar Entrevista:</label>
+                    <input type="datetime-local" name="scheduled_time" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button type="submit" class="w-full mt-2 bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300">
+                        <i class="fas fa-calendar-alt"></i> Agendar
+                    </button>
+                </form>
+                {% endif %}
+
+                <!-- Atualização de Status da Entrevista (se já houver entrevista agendada) -->
+                {% if candidatura.interview %}
+                <form action="{{ url_for('update_interview_status', interview_id=candidatura.interview.id) }}" method="POST">
+                    <label class="block text-gray-700">Status da Entrevista:</label>
+                    <select name="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="Pendente" {% if candidatura.interview.status == "Pendente" %} selected {% endif %}>Pendente</option>
+                        <option value="Concluída" {% if candidatura.interview.status == "Concluída" %} selected {% endif %}>Concluída</option>
+                        <option value="Cancelada" {% if candidatura.interview.status == "Cancelada" %} selected {% endif %}>Cancelada</option>
+                    </select>
+                    <button type="submit" class="w-full mt-2 bg-purple-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-purple-600 transition duration-300">
+                        <i class="fas fa-sync-alt"></i> Atualizar Status
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Caso não haja candidaturas -->
+    {% if candidaturas|length == 0 %}
+    <div class="text-center mt-6">
+        <p class="text-gray-500">Nenhuma candidatura recebida até o momento.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

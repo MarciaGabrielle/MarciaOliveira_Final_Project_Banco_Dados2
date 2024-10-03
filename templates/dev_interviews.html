@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Minhas Entrevistas{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Minhas Entrevistas</h2>
+    <ul class="list-group">
+        {% for interview in interviews %}
+        <li class="list-group-item">
+            <h5>Vaga: {{ interview.job.title }}</h5>
+            <p>Data: {{ interview.scheduled_time }}</p>
+            <p>Status: {{ interview.status }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

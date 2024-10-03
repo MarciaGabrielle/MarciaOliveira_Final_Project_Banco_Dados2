@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block title %} Dashboard {% endblock %}
+
+
+{% block content %}
+<!-- Barra de navegação fixa no topo -->
+
+
+<!-- Conteúdo principal -->
+<div class="mt-24 px-6 lg:px-8">
+    <!-- Header com Gradiente -->
+    <div class="bg-gradient-to-r from-blue-600 via-blue-800 to-green-500 text-white py-14 text-center rounded-xl shadow-lg">
+        <h1 class="text-5xl font-extrabold">Encontre a Oportunidade Perfeita</h1>
+        <p class="text-lg mt-4 opacity-90">Descubra vagas que combinam com suas habilidades e interesses!</p>
+    </div>
+
+    <!-- Botões de Ações -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 my-10">
+        <a href="{{ url_for('dev_applications') }}" class="bg-blue-600 text-white py-4 px-6 rounded-xl shadow-lg transform transition duration-300 hover:scale-105 flex items-center justify-center space-x-3">
+            <span class="text-lg font-semibold">Minhas Candidaturas</span>
+        </a>
+        <a href="{{ url_for('dev_matches') }}" class="bg-green-600 text-white py-4 px-6 rounded-xl shadow-lg transform transition duration-300 hover:scale-105 flex items-center justify-center space-x-3">
+            <span class="text-lg font-semibold">Ver Matches</span>
+        </a>
+        <a href="{{ url_for('dev_profile') }}" class="bg-indigo-600 text-white py-4 px-6 rounded-xl shadow-lg transform transition duration-300 hover:scale-105 flex items-center justify-center space-x-3">
+            <span class="text-lg font-semibold">Meu Perfil</span>
+        </a>
+        <a href="{{ url_for('dev_favorites') }}" class="bg-yellow-600 text-white py-4 px-6 rounded-xl shadow-lg transform transition duration-300 hover:scale-105 flex items-center justify-center space-x-3">
+            <span class="text-lg font-semibold">Favoritos</span>
+        </a>
+    </div>
+
+    <!-- Campo de Busca -->
+    <div class="mb-8">
+        <form method="GET" action="{{ url_for('dev_dashboard') }}" class="flex items-center bg-gray-100 rounded-lg shadow-lg">
+            <input type="text" name="search" placeholder="Pesquisar vagas..." class="w-full p-4 text-lg text-gray-700 focus:outline-none rounded-l-lg" />
+            <button type="submit" class="bg-indigo-500 text-white px-6 py-4 rounded-r-lg shadow hover:bg-indigo-600 transition-all duration-300">
+                Pesquisar
+            </button>
+        </form>
+    </div>
+
+    <!-- Mensagem de sucesso ao candidatar-se -->
+    {% if flash_success %}
+    <div id="success-message" class="mb-8 bg-green-500 text-white py-3 px-5 rounded-lg shadow-lg text-center">
+        {{ flash_success }}
+    </div>
+    <script>
+        // Auto-hide the success message after 3 seconds
+        setTimeout(function() {
+            document.getElementById('success-message').style.display = 'none';
+        }, 3000);
+    </script>
+    {% endif %}
+
+    <!-- Lista de Vagas -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {% for job in jobs %}
+        <div class="bg-white rounded-xl shadow-lg p-6 transition-transform duration-300 hover:scale-105">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">{{ job.title }}</h3>
+            <p class="text-gray-600 mb-4">{{ job.description }}</p>
+            <p class="text-gray-500 mb-4"><strong>Requisitos:</strong> {{ job.requirements }}</p>
+            <p class="text-gray-700 mb-4"><strong>Empresa:</strong> {{ job.empresa.name }}</p> <!-- Nome da empresa -->
+
+            <div class="flex mt-4 space-x-3">
+                <form action="{{ url_for('apply_job', job_id=job.id) }}" method="POST">
+                    <button type="submit" class="w-full bg-green-500 text-white py-3 px-5 rounded-lg shadow-lg hover:bg-green-600 transition-all duration-300">
+                        Candidatar-se
+                    </button>
+                </form>
+
+                {% if job in dev.favorites %}
+                <form action="{{ url_for('unfavorite_job', job_id=job.id) }}" method="POST">
+                    <button type="submit" class="w-full bg-yellow-500 text-white py-3 px-5 rounded-lg shadow-lg hover:bg-yellow-600 transition-all duration-300">
+                        Desfavoritar
+                    </button>
+                </form>
+                {% else %}
+                <form action="{{ url_for('favorite_job', job_id=job.id) }}" method="POST">
+                    <button type="submit" class="w-full bg-blue-500 text-white py-3 px-5 rounded-lg shadow-lg hover:bg-blue-600 transition-all duration-300">
+                        Favoritar
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- JavaScript para alternar o tema -->
+
+
+{% endblock %}

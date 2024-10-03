@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %} Perfil do Desenvolvedor {% endblock %}
+
+{% block content %}
+
+<!-- Barra de navegação fixa no topo -->
+
+<div class="container mx-auto my-10">
+
+    <!-- Cabeçalho do perfil com imagem, nome e localização -->
+    <div class="bg-gradient-to-r from-blue-600 via-blue-800 to-green-500 rounded-lg shadow-lg p-8 text-white relative">
+        <div class="flex flex-col items-center space-y-4"> <!-- Alterado para empilhar verticalmente -->
+            <!-- Foto de perfil -->
+            {% if dev.profile_picture %}
+                <img src="{{ url_for('static', filename='uploads/' ~ dev.profile_picture) }}" alt="Foto de Perfil" class="w-36 h-36 rounded-full border-4 border-white shadow-md">
+            {% else %}
+                <div class="w-36 h-36 rounded-full bg-gray-300 flex items-center justify-center">
+                    <i class="fas fa-user text-4xl text-gray-500"></i>
+                </div>
+            {% endif %}
+
+            <!-- Nome e localização -->
+            <div class="text-center">
+                <h2 class="text-3xl font-bold">{{ dev.name }}</h2>
+                <p class="text-lg mt-2"><i class="fas fa-map-marker-alt"></i> {{ dev.cidade }}, {{ dev.pais }}</p>
+            </div>
+            
+            <!-- Informações resumidas em ícones -->
+            <div class="flex justify-center space-x-6 mt-4">
+                <div class="text-center">
+                    <i class="fas fa-briefcase text-2xl"></i>
+                    <p class="text-sm">Análise de dados</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-calendar-alt text-2xl"></i>
+                    <p class="text-sm">None</p>
+                </div>
+            </div>
+
+            <!-- Botão de Editar perfil -->
+            <a href="{{ url_for('edit_profile') }}" class="bg-yellow-400 text-gray-900 py-2 px-4 rounded-full shadow-lg hover:bg-yellow-500 transition duration-300 mt-4">
+                Editar Perfil
+            </a>
+        </div>
+    </div>
+
+    <!-- Seção de Informações -->
+    <div class="mt-8 space-y-6"> <!-- Stacking vertical -->
+        
+        <!-- Informações principais -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h3 class="text-2xl font-semibold text-gray-700 mb-4">Informações do Desenvolvedor</h3>
+            <ul class="space-y-3">
+                <li><strong>Email:</strong> {{ dev.email }}</li>
+                <li><strong>Celular:</strong> {{ dev.cel }}</li>
+                <li><strong>Habilidades:</strong> {{ dev.habilidades }}</li>
+                <li><strong>Disponibilidade:</strong> {{ dev.disponibilidade }}</li>
+                <li><strong>Idiomas:</strong> {{ dev.idiomas }}</li>
+                {% if dev.cv_file %}
+                <li><strong>Currículo:</strong> <a href="{{ url_for('download_cv', cv_file=dev.cv_file) }}" class="text-blue-500 hover:underline">Baixar Currículo</a></li>
+                {% else %}
+                <li><strong>Currículo:</strong> Não disponível</li>
+                {% endif %}
+            </ul>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

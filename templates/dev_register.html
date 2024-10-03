@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title %} Dev Register {% endblock %}
+
+{% block content %}
+<div id='containerHome' class="container mx-auto my-10">
+  <!-- Seção de cabeçalho com logo e título -->
+  <div class="text-center mb-8">
+    <img src="{{ url_for('static', filename='images/tinder-icon.png') }}" 
+         alt='Logo projeto' class="max-w-full h-auto mx-auto" style="width: 100px;">
+    <h2 class="text-4xl font-bold text-gray-800">Cadastrar como Desenvolvedor</h2>
+    <p class="text-gray-600 mt-2">Complete o formulário abaixo para criar sua conta</p>
+  </div>
+
+  <!-- Seção do formulário de cadastro -->
+  <div class="bg-white rounded-lg shadow-lg p-8 max-w-lg mx-auto">
+    <form class="space-y-6" method="POST" novalidate>
+      <!-- CSRF Token -->
+      {{ form.hidden_tag() }}
+
+      <!-- Nome -->
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Nome Completo</label>
+        {{ form.name(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Digite seu nome completo") }}
+        {% if form.name.errors %}
+          <p class="text-red-500 text-sm mt-2">{{ form.name.errors[0] }}</p>
+        {% endif %}
+      </div>
+
+      <!-- E-mail -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+        {{ form.email(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Digite seu e-mail") }}
+        {% if form.email.errors %}
+          <p class="text-red-500 text-sm mt-2">{{ form.email.errors[0] }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Celular -->
+      <div>
+        <label for="cel" class="block text-sm font-medium text-gray-700">Celular</label>
+        {{ form.cel(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Digite seu número de celular") }}
+        {% if form.cel.errors %}
+          <p class="text-red-500 text-sm mt-2">{{ form.cel.errors[0] }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Senha -->
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+        {{ form.password(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Digite uma senha segura") }}
+        {% if form.password.errors %}
+          <p class="text-red-500 text-sm mt-2">{{ form.password.errors[0] }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Habilidades -->
+      <div>
+        <label for="habilidades" class="block text-sm font-medium text-gray-700">Habilidades</label>
+        {{ form.habilidades(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Ex: Python, JavaScript, etc.") }}
+        {% if form.habilidades.errors %}
+          <p class="text-red-500 text-sm mt-2">{{ form.habilidades.errors[0] }}</p>
+        {% endif %}
+      </div>
+
+      <!-- Botão de Cadastro -->
+      <div class="flex justify-center">
+        <button type="submit" class="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-blue-600 hover:to-purple-700 transition duration-300 ease-in-out">
+          Cadastrar
+        </button>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Link para fazer login -->
+  <div class="text-center mt-6">
+    <p class="text-gray-700">Já tem uma conta? <a href="{{ url_for('dev_login') }}" class="text-blue-500 hover:underline">Faça login aqui</a></p>
+  </div>
+</div>
+{% endblock %}

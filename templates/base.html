@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {% block styles %}
+  <!-- Load Bootstrap-Flask CSS here -->
+  {{ bootstrap.load_css() }}
+
+  <!-- Tailwind CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+  <!-- Link to the styles.css here to apply styling to all the child templates.-->
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/styles.css') }}"
+  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  {% endblock %}
+
+  <title>{% block title %} {% endblock %}</title>
+</head>
+
+<body class="{% if session.theme == 'dark' %}dark{% endif %}">
+
+  <!-- Barra de navegação fixa no topo -->
+  <nav class="bg-gray-900 text-white shadow-md fixed w-full top-0 left-0 z-10">
+    <div class="container mx-auto flex justify-between items-center py-4">
+      <a href="{{ url_for('dev_dashboard') }}" class="text-2xl font-bold tracking-wide">Tinder Jobs</a>
+      <ul class="flex space-x-6">
+        <li><a href="{{ url_for('dev_dashboard') }}" class="hover:text-gray-300">Vagas</a></li>
+        <li><a href="{{ url_for('dev_applications') }}" class="hover:text-gray-300">Minhas Candidaturas</a></li>
+        <li><a href="{{ url_for('dev_matches') }}" class="hover:text-gray-300">Matches</a></li>
+        <li><a href="{{ url_for('dev_profile') }}" class="hover:text-gray-300">Perfil</a></li>
+        <li><a href="{{ url_for('logout') }}" class="hover:text-red-300">Logout</a></li>
+      </ul>
+      <!-- Botão para alternar o tema -->
+      <button id="toggleTheme" class="bg-gray-700 text-white px-3 py-2 rounded-md hover:bg-gray-600">
+        🌙
+      </button>
+    </div>
+  </nav>
+
+  <!-- Espaço de margem para evitar sobreposição com a navbar -->
+  <div class="min-h-screen mt-20">
+    {% block content %} {% endblock %}
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-blue-900 text-white py-10">
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Logo e Redes Sociais -->
+      <div class="flex flex-col items-center md:items-start">
+        <img src="{{ url_for('static', filename='images/tinder-jobs-logo.png') }}" alt="Logo Tinder Jobs" class="w-32 mb-4">
+        <div class="flex space-x-4">
+          <a href="https://facebook.com" class="text-gray-300 hover:text-white">
+            <i class="fab fa-facebook-square text-2xl"></i>
+          </a>
+          <a href="https://twitter.com" class="text-gray-300 hover:text-white">
+            <i class="fab fa-twitter-square text-2xl"></i>
+          </a>
+          <a href="https://linkedin.com" class="text-gray-300 hover:text-white">
+            <i class="fab fa-linkedin text-2xl"></i>
+          </a>
+          <a href="https://instagram.com" class="text-gray-300 hover:text-white">
+            <i class="fab fa-instagram-square text-2xl"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Links Importantes -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4">Links Úteis</h4>
+        <ul class="space-y-2">
+          <li><a href="#" class="text-gray-300 hover:text-white">Sobre nós</a></li>
+          <li><a href="#" class="text-gray-300 hover:text-white">Contato</a></li>
+          <li><a href="#" class="text-gray-300 hover:text-white">Termos de Serviço</a></li>
+          <li><a href="#" class="text-gray-300 hover:text-white">Política de Privacidade</a></li>
+        </ul>
+      </div>
+
+      <!-- Informações de Contato -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4">Contato</h4>
+        <p class="text-gray-300">Endereço: Rua Exemplo, 123<br>Cidade, País</p>
+        <p class="text-gray-300 mt-2">Telefone: (11) 1234-5678</p>
+        <p class="text-gray-300 mt-2">Email: contato@tinderjobs.com</p>
+      </div>
+
+      <!-- Newsletter -->
+      <div>
+        <h4 class="text-lg font-semibold mb-4">Inscreva-se na Newsletter</h4>
+        <form>
+          <input 
+            type="email" 
+            placeholder="Seu e-mail" 
+            class="w-full px-3 py-2 rounded bg-blue-700 text-white placeholder-gray-300 mb-4">
+          <button 
+            type="submit" 
+            class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg">
+            Inscrever-se
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="border-t border-blue-700 mt-8 pt-4 text-center text-gray-300">
+      © 2024 Tinder Jobs. Todos os direitos reservados.
+    </div>
+  </footer>
+
+  <!-- JavaScript para alternar o tema -->
+  <script>
+    const toggleThemeButton = document.getElementById('toggleTheme');
+    const body = document.body;
+
+    toggleThemeButton.addEventListener('click', () => {
+      if (body.classList.contains('dark')) {
+        body.classList.remove('dark');
+        toggleThemeButton.textContent = '🌙';
+        fetch('{{ url_for("toggle_theme") }}?theme=light');
+      } else {
+        body.classList.add('dark');
+        toggleThemeButton.textContent = '☀️';
+        fetch('{{ url_for("toggle_theme") }}?theme=dark');
+      }
+    });
+  </script>
+
+  <!-- Tema escuro -->
+  <style>
+    .dark {
+      background-color: #1a202c;
+      color: #cbd5e0;
+    }
+    .dark nav {
+      background-color: #2d3748;
+    }
+    .dark input, .dark .bg-white {
+      background-color: #2d3748;
+      color: #e2e8f0;
+    }
+    .dark button {
+      background-color: #4a5568;
+    }
+  </style>
+
+  <!-- Scripts -->
+  {% block scripts %}
+  {{ bootstrap.load_js() }}
+  {% endblock %}
+</body>
+</html>

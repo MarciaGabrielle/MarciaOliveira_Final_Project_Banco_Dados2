@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %} Adicionar Nova Vaga {% endblock %}
+
+{% block content %}
+<!-- Barra de navegação fixa no topo -->
+<nav class="bg-gray-900 text-white shadow-md fixed w-full top-0 left-0 z-10">
+    <div class="container mx-auto flex justify-between items-center py-4">
+        <a href="{{ url_for('empresa_dashboard') }}" class="text-2xl font-bold">
+            Tinder Jobs
+        </a>
+        <ul class="flex space-x-4">
+            <li><a href="{{ url_for('add_job') }}" class="hover:text-gray-200">Adicionar Vaga</a></li>
+            <li><a href="{{ url_for('empresa_candidaturas') }}" class="hover:text-gray-200">Ver Candidaturas</a></li>
+            <li><a href="{{ url_for('logout') }}" class="hover:text-gray-200 text-red-300">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Espaçamento adicional para evitar sobreposição com a barra de navegação -->
+<div class="container mx-auto mt-20 px-4 max-w-7xl">
+    <!-- Seção de Cabeçalho com gradiente -->
+    <div class="bg-gradient-to-r from-blue-600 via-blue-800 to-green-500 text-white p-8 rounded-lg shadow-lg text-center mb-8">
+        <h2 class="text-4xl font-semibold mb-4">Publicar Nova Vaga</h2>
+        <p class="text-lg">Preencha os detalhes abaixo para adicionar uma nova vaga ao sistema.</p>
+    </div>
+
+    <!-- Formulário de Nova Vaga -->
+    <div class="bg-white rounded-lg shadow-lg p-8">
+        <form id="addJobForm" method="POST" action="{{ url_for('add_job') }}" class="space-y-6">
+            {{ form.hidden_tag() }}
+
+            <!-- Campo Título -->
+            <div>
+                <label for="title" class="block text-sm font-medium text-gray-700">Título da Vaga</label>
+                {{ form.title(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Ex: Desenvolvedor FullStack") }}
+            </div>
+
+            <!-- Campo Descrição -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700">Descrição</label>
+                {{ form.description(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Descreva as responsabilidades do cargo") }}
+            </div>
+
+            <!-- Campo Requisitos -->
+            <div>
+                <label for="requirements" class="block text-sm font-medium text-gray-700">Requisitos</label>
+                {{ form.requirements(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Liste os requisitos da vaga") }}
+            </div>
+
+            <!-- Botão de Publicar Vaga com feedback visual -->
+            <div class="flex justify-center">
+                <button id="submitButton" type="submit" class="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-blue-600 hover:to-purple-700 transition duration-300 ease-in-out">
+                    Publicar Vaga
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Feedback de Sucesso -->
+    <div id="successMessage" class="hidden mt-6 text-center">
+        <p class="text-green-600 font-bold">Vaga publicada com sucesso!</p>
+    </div>
+</div>
+
+<!-- Script para animação de feedback e notificação de sucesso -->
+<script>
+    const form = document.getElementById('addJobForm');
+    const submitButton = document.getElementById('submitButton');
+    const successMessage = document.getElementById('successMessage');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita o envio imediato para mostrar a animação
+        submitButton.disabled = true; // Desabilita o botão enquanto processa
+        submitButton.textContent = 'Publicando...'; // Altera o texto para indicar processamento
+        
+        setTimeout(() => {
+            form.submit(); // Envia o formulário após um pequeno atraso
+            successMessage.classList.remove('hidden'); // Mostra a mensagem de sucesso
+        }, 1500); // Simula um pequeno atraso para a submissão visual
+    });
+</script>
+{% endblock %}

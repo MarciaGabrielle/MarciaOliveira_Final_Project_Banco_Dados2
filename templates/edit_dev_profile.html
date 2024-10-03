@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %} Editar Perfil {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Editar Perfil</h2>
+    
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Nome:</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ dev.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="email">E-mail:</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ dev.email }}" required>
+        </div>
+        <div class="form-group">
+            <label for="cel">Celular:</label>
+            <input type="text" class="form-control" id="cel" name="cel" value="{{ dev.cel }}" required>
+        </div>
+        <div class="form-group">
+            <label for="habilidades">Habilidades:</label>
+            <textarea class="form-control" id="habilidades" name="habilidades" required>{{ dev.habilidades }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="cidade">Cidade:</label>
+            <input type="text" class="form-control" id="cidade" name="cidade" value="{{ dev.cidade }}">
+        </div>
+        <div class="form-group">
+            <label for="pais">País:</label>
+            <input type="text" class="form-control" id="pais" name="pais" value="{{ dev.pais }}">
+        </div>
+        <div class="form-group">
+            <label for="disponibilidade">Disponibilidade:</label>
+            <input type="text" class="form-control" id="disponibilidade" name="disponibilidade" value="{{ dev.disponibilidade }}">
+        </div>
+        <div class="form-group">
+            <label for="idiomas">Idiomas:</label>
+            <textarea class="form-control" id="idiomas" name="idiomas">{{ dev.idiomas }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="objetivo_profissional">Objetivo Profissional:</label>
+            <textarea class="form-control" id="objetivo_profissional" name="objetivo_profissional">{{ dev.objetivo_profissional }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="cv_file">Currículo (opcional):</label>
+            <input type="file" class="form-control" id="cv_file" name="cv_file">
+        </div>
+        <div class="form-group">
+            <label for="profile_picture">Foto de Perfil:</label>
+            <input type="file" name="profile_picture" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+    </form>
+</div>
+{% endblock %}

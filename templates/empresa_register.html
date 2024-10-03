@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+{% block title %} Cadastro de Empresa {% endblock %}
+
+{% block content %}
+<div id='containerHome' class="container mx-auto my-10">
+  <!-- Seção de cabeçalho com logo e título -->
+  <div class="text-center mb-8">
+    <img src="{{ url_for('static', filename='images/tinder-icon.png') }}" 
+         alt='Logo projeto' class="max-w-full h-auto mx-auto" style="width: 100px;">
+    <h2 class="text-4xl font-bold text-gray-800">Cadastrar Empresa</h2>
+    <p class="text-gray-600 mt-2">Preencha o formulário abaixo para cadastrar sua empresa</p>
+  </div>
+
+  <!-- Seção do formulário de cadastro de empresa -->
+  <div class="bg-white rounded-lg shadow-lg p-8 max-w-lg mx-auto">
+    <form class="space-y-6" method="POST" novalidate>
+      {{ form.hidden_tag() }}
+
+      <!-- Nome da Empresa -->
+      <div>
+        <label for="name" class="block text-sm font-medium text-gray-700">Nome da Empresa</label>
+        {{ form.name(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Digite o nome da empresa") }}
+      </div>
+
+      <!-- E-mail da Empresa -->
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700">E-mail da Empresa</label>
+        {{ form.email(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Digite o e-mail da empresa") }}
+      </div>
+
+      <!-- Senha -->
+      <div>
+        <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+        {{ form.password(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Digite uma senha segura") }}
+      </div>
+
+      <!-- Setor da Empresa -->
+      <div>
+        <label for="setor" class="block text-sm font-medium text-gray-700">Setor da Empresa</label>
+        {{ form.setor(class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500", placeholder="Ex: Tecnologia, Comércio, etc.") }}
+      </div>
+
+      <!-- Botão de Cadastro -->
+      <div class="flex justify-center">
+        <button type="submit" class="px-6 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:from-blue-600 hover:to-purple-700 transition duration-300 ease-in-out">
+          Cadastrar Empresa
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Link para fazer login -->
+  <div class="text-center mt-6">
+    <p class="text-gray-700">Já tem uma conta? <a href="{{ url_for('empresa_login') }}" class="text-blue-500 hover:underline">Faça login aqui</a></p>
+  </div>
+</div>
+{% endblock %}

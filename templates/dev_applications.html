@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %} Minhas Candidaturas {% endblock %}
+
+{% block content %}
+
+<!-- Barra de navegação fixa no topo -->
+
+
+<div class="container mx-auto mt-10 px-4">
+    <div class="bg-gradient-to-r from-blue-600 via-blue-800 to-green-500 text-white rounded-lg p-8 text-center mb-8">
+        <h2 class="text-4xl font-semibold mb-4">Minhas Candidaturas</h2>
+        <p class="text-lg">Confira as vagas para as quais você já se candidatou.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for job in jobs %}
+        <div class="relative bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-transform duration-300 ease-in-out">
+            <div class="p-6">
+                <!-- Ícone representando a vaga -->
+                <div class="w-12 h-12 mb-4 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center">
+                    <i class="fas fa-briefcase text-white text-xl"></i> <!-- Exemplo de ícone -->
+                </div>
+
+                <h5 class="text-xl font-bold text-gray-900 mb-2">{{ job.title }}</h5>
+                <p class="text-gray-600 text-sm mb-4">{{ job.description }}</p>
+                <p class="text-sm text-gray-700 font-medium"><strong>Requisitos:</strong> {{ job.requirements }}</p>
+            </div>
+
+            <div class="flex justify-between items-center px-6 py-4 bg-gray-50 border-t border-gray-200 rounded-b-lg">
+                <form action="#" method="POST">
+                    <button type="button" class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition-colors duration-300">
+                        Mais detalhes
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if jobs|length == 0 %}
+    <div class="text-center mt-6">
+        <p class="text-gray-500">Você ainda não se candidatou a nenhuma vaga.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

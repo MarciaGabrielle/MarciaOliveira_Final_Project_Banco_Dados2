@@ -9,6 +9,14 @@ Este projeto permite:
 - Empresas postarem vagas e gerenciarem candidatos.
 - Tanto desenvolvedores quanto empresas visualizarem e gerenciarem seus "matches", candidaturas e entrevistas.
 
+## Demonstração em Vídeo
+
+Confira uma demonstração completa do site Tinder Jobs em funcionamento no YouTube! No vídeo, mostro como o site funciona, incluindo funcionalidades como registro de desenvolvedores, criação de vagas por empresas, e o sistema de "matches" entre desenvolvedores e vagas.
+
+[Assista ao vídeo no YouTube](https://youtu.be/1tKq1Zy4-hs)
+
+Se tiver alguma dúvida ou sugestão, fique à vontade para deixar um comentário no vídeo!
+
 ## Funcionalidades
 
 - Autenticação de usuários para desenvolvedores e empresas.
